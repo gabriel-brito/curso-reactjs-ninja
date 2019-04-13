@@ -12,7 +12,15 @@ const centerRule = ({ total, activePage }) => {
   return activePage - 1
 }
 
-const pagination = ({ total, activePage }) => {
+const pagination = ({ total = 1, activePage = 1 } = {}) => {
+  if (typeof total !== 'number') 
+    throw new TypeError('total should be a number')
+
+  if (typeof activePage !== 'number') 
+    throw new TypeError('activePage should be a number')
+
+
+
   if (total <= 5) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }

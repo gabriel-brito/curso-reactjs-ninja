@@ -84,3 +84,44 @@ test('pagination({total: 15, activePage: 8}) should return [1, "...", 7, 8, 9, "
   const result = [1, "...", 7, 8, 9, "...", 15]
   expect(pagination(params)).to.be.eql(result)
 })
+
+test('pagination({total: 15}) should return [1, 2, 3, "...", 15]', () => {
+  const params = {total: 15}
+  const result = [1, 2, 3, "...", 15]
+  expect(pagination(params)).to.be.eql(result)
+})
+
+test('pagination({}) should return [1]', () => {
+  const params = {}
+  const result = [1]
+  expect(pagination(params)).to.be.eql(result)
+})
+
+test('pagination() should return [1]', () => {
+  const result = [1]
+  expect(pagination()).to.be.eql(result)
+})
+
+test('pagination({ total: "abc", activePage: "1" }) should throw an error', 
+  () => {
+  const result = 'total should be a number';
+  const params = { total: 'abc', activePage: 1 };
+
+  try {
+    pagination(params);
+  } catch (e) {
+    expect(e.message).to.be.equal(result);
+  }
+})
+
+test('pagination({ total: 15, activePage: "abc" }) should throw an error', 
+  () => {
+  const result = 'activePage should be a number';
+  const params = { total: 15, activePage: "abc" };
+
+  try {
+    pagination(params);
+  } catch (e) {
+    expect(e.message).to.be.equal(result);
+  }
+})
