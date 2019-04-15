@@ -151,9 +151,9 @@ call vundle#begin('~/.vim/plugins')
     Plugin 'raimondi/delimitmate'
     Plugin 'scrooloose/nerdtree'
     Plugin 'scrooloose/syntastic'
-    Plugin 'shougo/neocomplcache.vim'
-    Plugin 'shougo/neosnippet'
-    Plugin 'shougo/neosnippet-snippets'
+    Plugin 'Shougo/neocomplcache'
+    Plugin 'Shougo/neosnippet'
+    Plugin 'Shougo/neosnippet-snippets'
     Plugin 'shutnik/jshint2.vim'
     Plugin 'tomtom/tcomment_vim'
     Plugin 'tpope/vim-commentary'
@@ -165,8 +165,20 @@ call vundle#begin('~/.vim/plugins')
     Plugin 'digitaltoad/vim-jade'
     Plugin 'pangloss/vim-javascript'
     Plugin 'guns/vim-clojure-static'
-    Bundle 'mxw/vim-jsx'
+    Plugin 'mxw/vim-jsx'
     Plugin 'itchyny/lightline.vim'
+    Plugin 'neovimhaskell/haskell-vim'
+
+    Plugin 'jparise/vim-graphql'
+    Plugin 'isRuslan/vim-es6'
+    Plugin 'leafgarland/typescript-vim'
+    Plugin 'elixir-editors/vim-elixir'
+    Plugin 'slashmili/alchemist.vim'
+    Plugin 'chr4/nginx.vim'
+    Plugin 'terryma/vim-smooth-scroll'
+    Plugin 'styled-components/vim-styled-components'
+    Plugin 'terryma/vim-multiple-cursors'
+    Plugin 'yardnsm/vim-import-cost'
 call vundle#end()
 
 filetype on
@@ -188,6 +200,8 @@ let g:user_emmet_leader_key='<C-Y>'
 
 let g:user_emmet_settings = webapi#json#decode(join(readfile(expand('~/.vim/snippets/emmet.json')), "\n"))
 
+" Enable all functions in all modes
+let g:user_emmet_mode='a'
 
 " ----------------------------------------------------------------------
 " | Plugins - Indent Guides                                            |
@@ -350,29 +364,6 @@ if has('autocmd')
 
     " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    " Use relative line numbers
-    " http://jeffkreeftmeijer.com/2012/relative-line-numbers-in-vim-for-super-fast-movement/
-
-    augroup relative_line_numbers
-
-        autocmd!
-
-        " Automatically switch to absolute line numbers when vim loses focus
-        autocmd FocusLost * :set number
-
-        " Automatically switch to relative line numbers when vim gains focus
-        autocmd FocusGained * :set relativenumber
-
-        " Automatically switch to absolute line numbers when vim is in insert mode
-        autocmd InsertEnter * :set number
-
-        " Automatically switch to relative line numbers when vim is in normal mode
-        autocmd InsertLeave * :set relativenumber
-
-    augroup END
-
-    " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     " Automatically strip the trailing whitespaces when files are saved
 
     augroup strip_trailing_whitespaces
@@ -473,6 +464,9 @@ nmap <leader>ss :call StripTrailingWhitespaces()<CR>
 " [,t ] Toggle NERDTree
 map <leader>t :NERDTreeToggle<CR>
 
+nnoremap <C-\> :NERDTreeToggle<CR>
+inoremap <C-\> <ESC>:NERDTreeToggle<CR>
+
 " - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 " [,ti] Toggle indent
@@ -568,15 +562,18 @@ set statusline+=\ (%P)\        " Percent through file
 " | Personal Settings                                                  |
 " ----------------------------------------------------------------------
 com! Formatjson %!python -m json.tool
-com! Formatxml !xmllint --format -
 
 set list
+set nowrap
+set backupcopy=yes
 
-" colorscheme OceanicNext
 colorscheme onedark
 
 " EJS
-au BufNewFile,BufRead *.ejs set filetype=html
+au BufNewFile,BufRead *.{ejs,mjml} set filetype=html
+
+" slow way of never break syntax highlight from files
+autocmd FileType * syntax sync fromstart
 
 
 " ----------------------------------------------------------------------
@@ -591,3 +588,39 @@ au BufNewFile,BufRead *.ejs set filetype=html
 if filereadable(glob('~/.vimrc.local'))
     source ~/.vimrc.local
 endif
+
+" Haskell configuration
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_classic_highlighting = 1
+
+let g:jsx_ext_required = 0
+
+" Open file using `gf` in a vertical tab
+nnoremap gf :vertical wincmd f<CR>
+
+" fzf
+set rtp+=~/.fzf
+
+" Smooth Scroll
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 30, 2)<CR>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 30, 2)<CR>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 30, 4)<CR>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 30, 4)<CR>
+
+" Emmet
+" Use <Tab> to expand
+" let g:user_emmet_expandabbr_key='<Tab>'
+" imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
+
+" Add code highlight on blocks inside markdown files
+au BufNewFile,BufReadPost *.md[x] set filetype=markdown
+let g:markdown_fenced_languages = ['javascript', 'ruby', 'sh', 'yaml', 'javascript', 'html', 'vim', 'coffee', 'json', 'diff', 'jsx', 'js']
+" let g:markdown_fenced_languages=['coffee', 'css', 'erb=eruby', '.jsx=javascript', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
+
+" Import cost
+let g:import_cost_always_open_split = 0
