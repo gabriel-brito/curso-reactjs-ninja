@@ -19,8 +19,6 @@ const pagination = ({ total = 1, activePage = 1 } = {}) => {
   if (typeof activePage !== 'number') 
     throw new TypeError('activePage should be a number')
 
-
-
   if (total <= 5) {
     return Array.from({ length: total }, (_, i) => i + 1)
   }
