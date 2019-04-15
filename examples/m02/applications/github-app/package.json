@@ -13,18 +13,18 @@
   "devDependencies": {
     "@kadira/storybook": "^2.30.1",
     "babel-core": "^6.18.2",
-    "babel-jest": "^17.0.2",
+    "babel-jest": "17.0.2",
     "babel-loader": "^6.2.8",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
-    "chai": "^3.5.0",
+    "chai": "3.5.0",
     "cross-env": "^3.1.3",
     "css-loader": "^0.26.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "gulp": "^3.9.1",
     "html-webpack-plugin": "^2.24.1",
-    "jest-cli": "^17.0.3",
+    "jest-cli": "17.0.3",
     "react-hot-loader": "^3.0.0-beta.6",
     "snazzy": "^5.0.0",
     "standard": "^8.5.0",
@@ -33,7 +33,9 @@
     "webpack": "^1.13.3",
     "webpack-dashboard": "^0.2.0",
     "webpack-dev-server": "^1.16.2",
-    "webpack-validator": "^2.2.9"
+    "webpack-validator": "^2.2.9",
+    "snazzy": "5.0.0",
+    "gulp": "3.9.1"
   },
   "dependencies": {
     "@fdaciuk/ajax": "^2.1.2",
@@ -41,6 +43,6 @@
     "react-dom": "^15.4.0"
   },
   "standard": {
-    "globals": ["test", "it", "describe"]
+    "globals": ["test", "it", "describe", "context"]
   }
 }
